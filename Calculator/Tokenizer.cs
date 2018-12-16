@@ -10,12 +10,13 @@ namespace Calculator
 {
     public class Tokenizer
     {
-        public List<Token> Tokens { get; }
+        public List<Token> Tokens { get; } 
         private readonly StringReader reader;
         public double Number { get; private set; }
         public Tokenizer(StringReader reader)
         {
             this.reader = reader;
+            Tokens = new List<Token>();
         }
 
         public void Parse()
@@ -26,7 +27,6 @@ namespace Calculator
                 switch (currentChar)
                 {
                     case ' ':
-                        NextChar();
                         break;
                     case '+':
                         Tokens.Add(new Token(TokenType.Add));
@@ -48,9 +48,11 @@ namespace Calculator
                         break;
                     default:
                         GetNumber(currentChar);
+                        Tokens.Add(new Token(TokenType.Number, Number));
                         break;
                 }
 
+                currentChar = NextChar();
             }
         }
 
